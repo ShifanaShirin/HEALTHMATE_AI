@@ -1,0 +1,22 @@
+name: health_mate
+description: HealthMate AI app
+publish_to: "none"
+version: 1.0.0+1
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.0.2+1
+  path: ^1.8.0
+  timezone: ^0.9.0
+  intl: ^0.17.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1  # ✅ Add this line
+
+flutter:
+  uses-material-design: true
