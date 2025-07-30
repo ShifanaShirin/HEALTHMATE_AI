@@ -34,68 +34,176 @@ class HomePage extends StatelessWidget {
       {
         'title': 'First Aid Guide',
         'icon': Icons.health_and_safety,
-        'page': FirstAidGuidePage(), // This is not const due to dynamic data inside
+        'page': FirstAidGuidePage(),
       },
     ];
 
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF8A2387), Color(0xFFE94057), Color(0xFFF27121)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Hey 👋\nWelcome to HealthMate AI!',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: AppBar(
+          backgroundColor: const Color.fromARGB(255, 182, 208, 243),
+          automaticallyImplyLeading: false,
+          title: const Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Text(
+              'HealthMate AI!',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.deepPurple,
               ),
             ),
-            const SizedBox(height: 30),
-            Expanded(
-              child: GridView.builder(
-                itemCount: features.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 0.9,
+          ),
+          leading: Builder(
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: IconButton(
+                  icon: const Icon(Icons.menu, color: Colors.deepPurple),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
                 ),
-                itemBuilder: (context, index) {
+              );
+            },
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: Color.fromARGB(255, 182, 208, 243)),
+              accountName: const Text('Shifana'),
+              accountEmail: const Text('shifana@gmail.com'),
+              currentAccountPicture: const CircleAvatar(
+                radius: 60,
+                backgroundImage: AssetImage('assets/profile.jpg'),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Dashboard'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage())),
+            ),
+            ListTile(
+              leading: const Icon(Icons.coronavirus),
+              title: const Text('Disease Prediction'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DiseasePredictionPage())),
+            ),
+            ListTile(
+              leading: const Icon(Icons.medical_services),
+              title: const Text('Medicine Recommendation'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const MedicineRecommendationPage())),
+            ),
+            ListTile(
+              leading: const Icon(Icons.date_range),
+              title: const Text('Expiry Tracker'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.alarm),
+              title: const Text('Intake Reminder'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.health_and_safety),
+              title: const Text('First Aid Guide'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Help'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Logout', style: TextStyle(fontWeight: FontWeight.bold)),
+                      content: const Text('Are you want exit this app?', style: TextStyle(fontSize: 15)),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Color.fromARGB(255, 182, 208, 243))),
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('CANCEL', style: TextStyle(color: Colors.white)),
+                        ),
+                        ElevatedButton(
+                          style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Color.fromARGB(255, 182, 208, 243))),
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage())),
+                          child: const Text('OK', style: TextStyle(color: Colors.white)),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Container(
+            color: const Color.fromARGB(255, 182, 208, 243),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  prefixIcon: Icon(Icons.search, color: Colors.deepPurple),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Wrap(
+                spacing: 15,
+                runSpacing: 15,
+                alignment: WrapAlignment.center,
+                children: features.map((feature) {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => features[index]['page'],
+                          builder: (context) => feature['page'],
                         ),
                       );
                     },
                     child: Container(
+                      width: MediaQuery.of(context).size.width / 2 - 30,
+                      height: 190,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: const Color.fromRGBO(255, 255, 255, 0.3),
+                        color: const Color.fromARGB(255, 182, 208, 243),
                       ),
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            features[index]['icon'],
+                            feature['icon'],
                             size: 40,
                             color: Colors.deepPurple,
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            features[index]['title'],
+                            feature['title'],
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.w600,
@@ -107,11 +215,11 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   );
-                },
+                }).toList(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
